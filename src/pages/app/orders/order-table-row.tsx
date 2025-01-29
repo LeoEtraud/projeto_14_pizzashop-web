@@ -3,8 +3,21 @@ import { Button } from "@/components/ui/button";
 import { TableRow, TableCell, TableHead } from "@/components/ui/table";
 import { Search, ArrowRight, X } from "lucide-react";
 import { OrderDetails } from "./order-details";
+import { OrderStatus } from "@/components/order-status";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
-export function OrderTableRow() {
+export interface OrderTableRowProps {
+  order: {
+    orderId: string;
+    createdAt: string;
+    status: "pending" | "canceled" | "processing" | "delivering" | "delivered";
+    customerName: string;
+    total: number;
+  };
+}
+
+export function OrderTableRow({ order }: OrderTableRowProps) {
   return (
     <TableRow>
       <TableCell>
@@ -19,17 +32,24 @@ export function OrderTableRow() {
         </Dialog>
       </TableCell>
       <TableHead className="font-mono text-xs font-medium">
-        2f12sf12asf21f2
+        {order.orderId}
       </TableHead>
-      <TableHead className="text-muted-foreground">Há 15 minutos</TableHead>
+      <TableHead className="text-muted-foreground">
+        {formatDistanceToNow(order.createdAt, {
+          locale: ptBR,
+          addSuffix: true,
+        })}
+      </TableHead>
       <TableHead>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-slate-400"></span>
-          <span className="font-medium text-muted-foreground">Pendente</span>
-        </div>
+        <OrderStatus status={order.status} />
       </TableHead>
-      <TableHead className="font-medium">Leonardo Neves Duarte</TableHead>
-      <TableHead className="font-medium">R$ 159,00</TableHead>
+      <TableHead className="font-medium">{order.customerName}</TableHead>
+      <TableHead className="font-medium">
+        {order.total.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        })}
+      </TableHead>
       <TableHead>
         <Button variant="outline" size="xs">
           <ArrowRight className="mr-2 h-3 w-3" />

@@ -69,12 +69,7 @@ export function SignIn() {
           <form onSubmit={handleSubmit(handleSignIn)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Seu e-mail</Label>
-              <Input
-                autoComplete="off"
-                id="email"
-                type="email"
-                {...register("email")}
-              ></Input>
+              <Input id="email" type="email" {...register("email")}></Input>
             </div>
 
             <Button disabled={isSubmitting} className="w-full" type="submit">
