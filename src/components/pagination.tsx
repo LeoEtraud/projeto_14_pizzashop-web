@@ -36,6 +36,7 @@ export function Pagination({
             variant="outline"
             className="h-8 w-8 p-0"
             disabled={pageIndex === 0}
+            title="Primeira página"
           >
             <ChevronsLeft className="h-4 w-4" />
             <span className="sr-only">Primeira página</span>
@@ -45,6 +46,7 @@ export function Pagination({
             variant="outline"
             className="h-8 w-8 p-0"
             disabled={pageIndex === 0}
+            title="Página anterior"
           >
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Página anterior</span>
@@ -54,6 +56,7 @@ export function Pagination({
             variant="outline"
             className="h-8 w-8 p-0"
             disabled={pages <= pageIndex + 1}
+            title="Próxima página"
           >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Próxima página</span>
@@ -63,6 +66,7 @@ export function Pagination({
             variant="outline"
             className="h-8 w-8 p-0"
             disabled={pages <= pageIndex + 1}
+            title="Última página"
           >
             <ChevronsRight className="h-4 w-4" />
             <span className="sr-only">Última página</span>
