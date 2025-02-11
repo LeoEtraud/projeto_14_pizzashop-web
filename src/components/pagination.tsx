@@ -10,7 +10,7 @@ export interface PaginationProps {
   pageIndex: number;
   totalCount: number;
   perPage: number;
-  onPageChange: (oageIndex: number) => Promise<void> | void;
+  onPageChange: (pageIndex: number) => Promise<void> | void;
 }
 
 export function Pagination({
