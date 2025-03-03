@@ -1,6 +1,6 @@
 import { Dialog, DialogTrigger } from "@/components/dialog";
 import { Button } from "@/components/ui/button";
-import { TableRow, TableCell, TableHead } from "@/components/ui/table";
+import { TableRow, TableCell } from "@/components/ui/table";
 import { Search, ArrowRight, X } from "lucide-react";
 import { OrderDetails } from "./order-details";
 import { OrderStatus } from "@/components/order-status";
@@ -96,26 +96,26 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
           <OrderDetails open={isDetailsOpen} orderId={order.orderId} />
         </Dialog>
       </TableCell>
-      <TableHead className="font-mono text-xs font-medium">
+      <TableCell className="font-mono text-xs font-medium">
         {order.orderId}
-      </TableHead>
-      <TableHead className="text-muted-foreground">
+      </TableCell>
+      <TableCell className="text-muted-foreground">
         {formatDistanceToNow(order.createdAt, {
           locale: ptBR,
           addSuffix: true,
         })}
-      </TableHead>
-      <TableHead>
+      </TableCell>
+      <TableCell>
         <OrderStatus status={order.status} />
-      </TableHead>
-      <TableHead className="font-medium">{order.customerName}</TableHead>
-      <TableHead className="font-medium">
+      </TableCell>
+      <TableCell className="font-medium">{order.customerName}</TableCell>
+      <TableCell className="font-medium">
         {(order.total / 100).toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
         })}
-      </TableHead>
-      <TableHead>
+      </TableCell>
+      <TableCell>
         {order.status === "pending" && (
           <Button
             onClick={() => approveOrderFn({ orderId: order.orderId })}
@@ -151,8 +151,8 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
             Entregue
           </Button>
         )}
-      </TableHead>
-      <TableHead>
+      </TableCell>
+      <TableCell>
         <Button
           disabled={
             !["pending", "processing"].includes(order.status) ||
@@ -165,7 +165,7 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
           <X className="mr-2 h-3 w-3" />
           Cancelar
         </Button>
-      </TableHead>
+      </TableCell>
     </TableRow>
   );
 }
