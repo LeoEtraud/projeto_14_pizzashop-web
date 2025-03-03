@@ -23,6 +23,7 @@ import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { subDays } from "date-fns";
+import { Loader2 } from "lucide-react";
 
 export function RevenueChart() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -63,7 +64,7 @@ export function RevenueChart() {
         </div>
       </CardHeader>
       <CardContent>
-        {charData && (
+        {charData ? (
           <ResponsiveContainer width="100%" height={240}>
             <LineChart data={charData} style={{ fontSize: 12 }}>
               <XAxis dataKey="date" tickLine={false} axisLine={false} dy={16} />
@@ -91,6 +92,10 @@ export function RevenueChart() {
               />
             </LineChart>
           </ResponsiveContainer>
+        ) : (
+          <div className="flex h-[240px] w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
         )}
       </CardContent>
     </Card>
