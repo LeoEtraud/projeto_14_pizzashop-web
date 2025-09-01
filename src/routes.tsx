@@ -12,20 +12,20 @@ import { Error } from "./pages/error";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <AppLayout />,
-    errorElement: <Error />,
+    element: <AuthLayout />,
     children: [
-      { path: "/", element: <Dashboard /> },
-      { path: "/orders", element: <Orders /> },
-      { path: "/collaborators", element: <Collaborators /> },
+      { index: true, element: <SignIn /> },
+      { path: "sign-up", element: <SignUp /> },
     ],
   },
   {
     path: "/",
-    element: <AuthLayout />,
+    element: <AppLayout />,
+    errorElement: <Error />,
     children: [
-      { path: "/sign-in", element: <SignIn /> },
-      { path: "/sign-up", element: <SignUp /> },
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "orders", element: <Orders /> },
+      { path: "collaborators", element: <Collaborators /> },
     ],
   },
   {
