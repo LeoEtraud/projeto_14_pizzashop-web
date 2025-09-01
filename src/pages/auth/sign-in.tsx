@@ -9,14 +9,12 @@ import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { signIn } from "@/api/sign-in";
 
-// VALIDANDO MEUS DADOS COM ZOD
 const signInForm = z.object({
   email: z.string().email(),
 });
 
 type SignInForm = z.infer<typeof signInForm>;
 
-// FUNÇÃO DE LOGIN
 export function SignIn() {
   const [searchParams] = useSearchParams();
 
@@ -24,6 +22,7 @@ export function SignIn() {
     register,
     handleSubmit,
     formState: { isSubmitting },
+    reset,
   } = useForm<SignInForm>({
     defaultValues: {
       email: searchParams.get("email") ?? "",
@@ -32,7 +31,6 @@ export function SignIn() {
 
   const { mutateAsync: authenticate } = useMutation({ mutationFn: signIn });
 
-  // FUNÇÃO ASSÍNCRONA PARA ENVIAR OS DADOS DO FORMULÁRIO
   async function handleSignIn(data: SignInForm) {
     try {
       await authenticate({ email: data.email });
@@ -43,7 +41,8 @@ export function SignIn() {
           onClick: () => handleSignIn(data),
         },
       });
-    } catch (error) {
+      reset();
+    } catch {
       toast.error("Credenciais inválidas.");
     }
   }
@@ -51,32 +50,57 @@ export function SignIn() {
   return (
     <>
       <Helmet title="Login" />
-      <div className="p-8">
-        <Button variant={"ghost"} asChild className="absolute right-8 top-8">
-          <Link to="/sign-up">Novo estabelecimento</Link>
-        </Button>
 
-        <div className="flex w-[350px] flex-col justify-center gap-6">
-          <div className="flex flex-col gap-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tighter">
-              Acessar painel
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Acompanhe suas vendas pelo painel do parceiro!
-            </p>
+      {/* Botão no canto no desktop; no mobile vira link abaixo do título */}
+      <Button
+        variant="ghost"
+        asChild
+        className="absolute right-6 top-6 hidden md:right-8 md:top-8 md:inline-flex"
+      >
+        <Link to="/sign-up">Novo estabelecimento</Link>
+      </Button>
+
+      <div className="w-full max-w-sm sm:max-w-md">
+        <div className="flex flex-col gap-2 text-center">
+          <h1 className="text-2xl font-semibold tracking-tighter">
+            Acessar painel
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Acompanhe suas vendas pelo painel do parceiro!
+          </p>
+
+          {/* Link alternativo visível apenas no mobile */}
+          <div className="md:hidden">
+            <Link
+              to="/sign-up"
+              className="text-sm underline underline-offset-4"
+            >
+              Novo estabelecimento
+            </Link>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit(handleSignIn)} className="mt-6 space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Seu e-mail</Label>
+            <Input
+              id="email"
+              type="email"
+              autoComplete="email"
+              inputMode="email"
+              placeholder="voce@exemplo.com"
+              {...register("email")}
+            />
           </div>
 
-          <form onSubmit={handleSubmit(handleSignIn)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Seu e-mail</Label>
-              <Input id="email" type="email" {...register("email")}></Input>
-            </div>
-
-            <Button disabled={isSubmitting} className="w-full" type="submit">
-              Acessar painel
-            </Button>
-          </form>
-        </div>
+          <Button
+            disabled={isSubmitting}
+            className="h-11 w-full text-base md:h-9 md:text-sm lg:h-10 lg:text-sm"
+            type="submit"
+          >
+            {isSubmitting ? "Enviando..." : "Acessar painel"}
+          </Button>
+        </form>
       </div>
     </>
   );
