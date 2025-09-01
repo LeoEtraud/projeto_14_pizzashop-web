@@ -25,6 +25,13 @@ export interface OrderDetailsProps {
   open: boolean;
 }
 
+interface OrderItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
 export function OrderDetails({ orderId, open }: OrderDetailsProps) {
   const { data: order } = useQuery({
     queryKey: ["order", orderId],
@@ -93,27 +100,27 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {order.orderItems.map((item) => {
+              {order.orderItems.map((item: OrderItem) => {
                 return (
                   <TableRow key={item.id}>
-                    <TableCell>{item.product.name}</TableCell>
+                    <TableCell>{item.name}</TableCell>
                     <TableCell className="text-right">
                       {item.quantity}
                     </TableCell>
                     <TableCell className="text-right">
-                      {(item.priceInCents / 100).toLocaleString("pt-BR", {
+                      {(item.price / 100).toLocaleString("pt-BR", {
                         style: "currency",
                         currency: "BRL",
                       })}
                     </TableCell>
                     <TableCell className="text-right">
-                      {(
-                        (item.priceInCents * item.quantity) /
-                        100
-                      ).toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      })}
+                      {((item.price * item.quantity) / 100).toLocaleString(
+                        "pt-BR",
+                        {
+                          style: "currency",
+                          currency: "BRL",
+                        },
+                      )}
                     </TableCell>
                   </TableRow>
                 );
