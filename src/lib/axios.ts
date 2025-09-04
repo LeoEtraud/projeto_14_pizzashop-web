@@ -2,8 +2,9 @@ import { env } from "@/env";
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: env.VITE_API_URL,
-  withCredentials: true, // Faz com que os cookies sejam enviados do front-end para o back-end
+  baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:3333",
+  withCredentials: true, // <- importante para CORS + cookies
+  headers: { "Content-Type": "application/json" },
 });
 
 if (env.VITE_ENABLE_API_DELAY) {
