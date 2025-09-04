@@ -11,15 +11,15 @@ export function Header() {
         <Pizza className="h-6 w-6" />
         <Separator orientation="vertical" className="h-6" />
         <nav className="flex select-none items-center space-x-4 lg:space-x-6">
-          <NavLink to="/">
+          <NavLink to="/app">
             <Home className="h-4 w-4" />
             Ínicio
           </NavLink>
-          <NavLink to="/orders">
+          <NavLink to="/app/orders">
             <UtensilsCrossed className="h-4 w-4" />
             Pedidos
           </NavLink>
-          <NavLink to="/collaborators">
+          <NavLink to="/app/collaborators">
             <UsersRound className="h-4 w-4" />
             Colaboradores
           </NavLink>
