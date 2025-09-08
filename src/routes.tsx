@@ -12,8 +12,12 @@ import { Collaborators } from "./pages/app/collaborators/collaborators";
 
 import { NotFound } from "./pages/404";
 import { Error } from "./pages/error";
+import AuthCallback from "./pages/AuthCallback";
 
 export const router = createBrowserRouter([
+  // callback do magic-link (pública)
+  { path: "/auth/callback", element: <AuthCallback /> },
+
   // --- Público (auth) na raiz ---
   {
     path: "/",
@@ -25,15 +29,15 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // --- App autenticado em /app ---
+  // --- App autenticado em /home ---
   {
     path: "/home",
     element: <AppLayout />,
     errorElement: <Error />,
     children: [
-      { index: true, element: <Dashboard /> }, // "/app"
-      { path: "orders", element: <Orders /> }, // "/app/orders"
-      { path: "collaborators", element: <Collaborators /> }, // "/app/collaborators"
+      { index: true, element: <Dashboard /> }, // "/home"
+      { path: "orders", element: <Orders /> }, // "/home/orders"
+      { path: "collaborators", element: <Collaborators /> }, // "/home/collaborators"
     ],
   },
 
