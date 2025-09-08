@@ -27,7 +27,7 @@ export const router = createBrowserRouter([
 
   // --- App autenticado em /app ---
   {
-    path: "/app",
+    path: "/home",
     element: <AppLayout />,
     errorElement: <Error />,
     children: [
@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
   },
 
   // (Opcional) redireciona bookmarks antigos
-  { path: "/dashboard", element: <Navigate to="/app" replace /> },
+  { path: "/dashboard", element: <Navigate to="/home" replace /> },
 
   // 404
   { path: "*", element: <NotFound /> },
