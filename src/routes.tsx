@@ -17,6 +17,7 @@ import AuthCallback from "./pages/AuthCallback";
 export const router = createBrowserRouter([
   // callback do magic-link (pública)
   { path: "/auth/callback", element: <AuthCallback /> },
+  { path: "/home/auth/callback", element: <AuthCallback /> }, // opcional, paliativo
 
   // --- Público (auth) na raiz ---
   {
