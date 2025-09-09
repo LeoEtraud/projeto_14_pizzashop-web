@@ -26,9 +26,7 @@ export function PopularProductsChart() {
     <Card className="col-span-1 lg:col-span-3">
       <CardHeader className="pb-8">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-medium">
-            Produtos populares
-          </CardTitle>
+          <CardTitle className="text-base font-medium">Mais pedidas</CardTitle>
           <BarChart className="h-4 w-4 text-muted-foreground" />
         </div>
       </CardHeader>
@@ -68,9 +66,9 @@ export function PopularProductsChart() {
                       textAnchor={x > cx ? "start" : "end"}
                       dominantBaseline="central"
                     >
-                      {popularProducts[index].product.length > 20
+                      {popularProducts[index].product.length > 12
                         ? popularProducts[index].product
-                            .substring(0, 20)
+                            .substring(0, 12)
                             .concat("...")
                         : popularProducts[index].product}{" "}
                       ({value})
