@@ -25,61 +25,50 @@ export interface OrderDetailsProps {
   open: boolean;
 }
 
-// Converte valores possíveis para centavos (número)
+interface OrderItem {
+  id: string;
+  product?: { name: string };
+  priceInCents?: unknown; // pode vir string/Decimal/number
+  unitPriceInCents?: unknown; // fallback
+  price?: unknown; // fallback
+  quantity: number;
+}
+
+// helper para converter QUALQUER forma para centavos (number)
 function toCents(raw: unknown): number {
   if (raw == null) return 0;
   if (typeof raw === "number" && Number.isFinite(raw)) return Math.round(raw);
 
-  const s = String(raw).trim();
-  if (!s) return 0;
-
-  // Se contiver vírgula/ponto, tratamos como reais (ex.: "50,00", "50.00")
-  if (/[.,]/.test(s)) {
-    const reais = parseFloat(s.replace(/\./g, "").replace(",", "."));
-    return Number.isFinite(reais) ? Math.round(reais * 100) : 0;
+  if (typeof raw === "string") {
+    const s = raw.trim();
+    if (!s) return 0;
+    // "4500" (centavos) → 4500 | "45,00"/"45.00" (reais) → 4500
+    if (/[.,]/.test(s)) {
+      const reais = parseFloat(s.replace(/\./g, "").replace(",", "."));
+      return Number.isFinite(reais) ? Math.round(reais * 100) : 0;
+    }
+    const n = Number(s);
+    return Number.isFinite(n) ? Math.round(n) : 0;
   }
 
-  // Caso contrário, interpretamos como inteiro de centavos (ex.: "5000")
-  const n = Number(s);
-  return Number.isFinite(n) ? Math.round(n) : 0;
+  if (typeof raw === "object") {
+    // Prisma Decimal, Big.js, etc.
+    const maybe = (raw as any).toNumber?.() ?? (raw as any).valueOf?.();
+    if (typeof maybe === "number" && Number.isFinite(maybe))
+      return Math.round(maybe);
+    if (typeof maybe === "string") {
+      const n = Number(maybe);
+      return Number.isFinite(n) ? Math.round(n) : 0;
+    }
+  }
+  return 0;
 }
-
-type UIItem = {
-  id: string;
-  name: string;
-  quantity: number;
-  unitPriceInCents: number;
-  subtotalInCents: number;
-};
 
 export function OrderDetails({ orderId, open }: OrderDetailsProps) {
   const { data: order } = useQuery({
     queryKey: ["order", orderId],
     queryFn: () => getOrderDetails({ orderId }),
     enabled: open,
-    // Normaliza tudo que a UI precisa
-    select: (o: any) => {
-      const items: UIItem[] = (o?.orderItems ?? []).map((it: any) => {
-        const quantity = Number(it?.quantity ?? 0);
-        const unitPriceInCents = toCents(
-          it?.priceInCents ?? it?.unitPriceInCents ?? it?.price,
-        );
-        return {
-          id: String(it?.id),
-          name: it?.product?.name ?? it?.name ?? "—",
-          quantity,
-          unitPriceInCents,
-          subtotalInCents: unitPriceInCents * quantity,
-        };
-      });
-
-      return {
-        ...o,
-        createdAt: new Date(o?.createdAt),
-        totalInCents: toCents(o?.totalInCents ?? o?.total ?? 0),
-        orderItems: items,
-      };
-    },
   });
 
   return (
@@ -131,7 +120,7 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
                     Realizado há
                   </TableCell>
                   <TableCell className="flex justify-end">
-                    {formatDistanceToNow(order.createdAt, {
+                    {formatDistanceToNow(new Date(order.createdAt), {
                       locale: ptBR,
                       addSuffix: true,
                     })}
@@ -153,43 +142,45 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
               </TableHeader>
 
               <TableBody>
-                {order.orderItems.map((item: UIItem) => (
-                  <TableRow key={item.id}>
-                    {/* Produto */}
-                    <TableCell>{item.name}</TableCell>
+                {order.orderItems.map((item: OrderItem) => {
+                  const unit = toCents(
+                    item.priceInCents ?? item.unitPriceInCents ?? item.price,
+                  );
+                  const qty = Number(item.quantity ?? 0);
+                  const subtotal = unit * qty;
 
-                    {/* Qtd. */}
-                    <TableCell className="text-right">
-                      {item.quantity}
-                    </TableCell>
-
-                    {/* Preço unitário */}
-                    <TableCell className="text-right">
-                      {(item.unitPriceInCents / 100).toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      })}
-                    </TableCell>
-
-                    {/* Subtotal */}
-                    <TableCell className="text-right">
-                      {(item.subtotalInCents / 100).toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      })}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                  return (
+                    <TableRow key={item.id}>
+                      <TableCell>{item.product?.name ?? "—"}</TableCell>
+                      <TableCell className="text-right">{qty}</TableCell>
+                      <TableCell className="text-right">
+                        {(unit / 100).toLocaleString("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {(subtotal / 100).toLocaleString("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
 
               <TableFooter>
                 <TableRow>
                   <TableCell colSpan={3}>Total do pedido</TableCell>
                   <TableCell className="text-right font-medium">
-                    {(order.totalInCents / 100).toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
+                    {(toCents(order.totalInCents) / 100).toLocaleString(
+                      "pt-BR",
+                      {
+                        style: "currency",
+                        currency: "BRL",
+                      },
+                    )}
                   </TableCell>
                 </TableRow>
               </TableFooter>
