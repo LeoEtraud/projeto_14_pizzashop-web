@@ -21,7 +21,7 @@ export default function AuthCallback() {
       "",
       window.location.pathname + window.location.search,
     );
-    navigate("/app", { replace: true });
+    navigate("/home", { replace: true });
   }, [navigate]);
 
   return null; // pode renderizar um spinner se quiser
