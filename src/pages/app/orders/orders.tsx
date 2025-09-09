@@ -50,7 +50,7 @@ export function Orders() {
     <>
       <Helmet title="Pedidos" />
       <div className="flex flex-col gap-4">
-        <h1 className="select-none text-3xl font-bold tracking-tight">
+        <h1 className="select-none text-2xl font-bold tracking-tight sm:text-3xl">
           Pedidos
         </h1>
 
@@ -58,27 +58,35 @@ export function Orders() {
           <OrderTableFilters />
 
           <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[64px]"></TableHead>
-                  <TableHead className="w-[140px]">Identificador</TableHead>
-                  <TableHead className="w-[180px]">Realizado há</TableHead>
-                  <TableHead className="w-[140px]">Status</TableHead>
-                  <TableHead>Cliente</TableHead>
-                  <TableHead className="w-[140px]">Total do pedido</TableHead>
-                  <TableHead className="w-[164px]"></TableHead>
-                  <TableHead className="w-[132px]"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isLoadingOrders && <OrderTableSkeleton />}
-                {result &&
-                  result.orders.map((order) => {
-                    return <OrderTableRow key={order.orderId} order={order} />;
-                  })}
-              </TableBody>
-            </Table>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[64px]"></TableHead>
+                    <TableHead className="w-[140px]">Identificador</TableHead>
+                    <TableHead className="hidden w-[180px] sm:table-cell">
+                      Realizado há
+                    </TableHead>
+                    <TableHead className="w-[140px]">Status</TableHead>
+                    <TableHead className="hidden md:table-cell">
+                      Cliente
+                    </TableHead>
+                    <TableHead className="w-[140px]">Total do pedido</TableHead>
+                    <TableHead className="hidden w-[164px] lg:table-cell"></TableHead>
+                    <TableHead className="w-[132px]"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {isLoadingOrders && <OrderTableSkeleton />}
+                  {result &&
+                    result.orders.map((order) => {
+                      return (
+                        <OrderTableRow key={order.orderId} order={order} />
+                      );
+                    })}
+                </TableBody>
+              </Table>
+            </div>
           </div>
 
           {result && (

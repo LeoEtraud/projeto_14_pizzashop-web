@@ -21,16 +21,16 @@ export function Pagination({
 }: PaginationProps) {
   const pages = Math.ceil(totalCount / perPage) || 1;
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <span className="text-sm text-muted-foreground">
         Total de {totalCount} item(s)
       </span>
 
-      <div className="flex items-center gap-6 lg:gap-8">
+      <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
         <div className="text-sm font-medium">
           Página {pageIndex + 1} de {pages}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           <Button
             onClick={() => onPageChange(0)}
             variant="outline"

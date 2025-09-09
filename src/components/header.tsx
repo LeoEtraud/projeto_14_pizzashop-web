@@ -7,21 +7,21 @@ import { AccountMenu } from "./account-menu";
 export function Header() {
   return (
     <div className="border-b">
-      <div className="flex h-16 items-center gap-6 px-6">
+      <div className="flex h-16 items-center gap-3 px-4 sm:gap-6 sm:px-6">
         <Pizza className="h-6 w-6" />
         <Separator orientation="vertical" className="h-6" />
-        <nav className="flex select-none items-center space-x-4 lg:space-x-6">
+        <nav className="flex select-none items-center space-x-2 sm:space-x-4 lg:space-x-6">
           <NavLink to="/home">
             <Home className="h-4 w-4" />
-            Ínicio
+            <span className="hidden sm:inline">Ínicio</span>
           </NavLink>
           <NavLink to="/home/orders">
             <UtensilsCrossed className="h-4 w-4" />
-            Pedidos
+            <span className="hidden sm:inline">Pedidos</span>
           </NavLink>
           <NavLink to="/home/collaborators">
             <UsersRound className="h-4 w-4" />
-            Colaboradores
+            <span className="hidden sm:inline">Colaboradores</span>
           </NavLink>
         </nav>
 

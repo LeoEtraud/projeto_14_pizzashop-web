@@ -16,19 +16,19 @@ export function OrderTableSkeleton() {
         <TableCell>
           <Skeleton className="h-4 w-[172px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="hidden sm:table-cell">
           <Skeleton className="h-4 w-[148px]" />
         </TableCell>
         <TableCell>
           <Skeleton className="h-4 w-[110px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="hidden md:table-cell">
           <Skeleton className="h-4 w-[200px]" />
         </TableCell>
         <TableCell>
           <Skeleton className="h-4 w-[64px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="hidden lg:table-cell">
           <Skeleton className="h-4 w-[92px]" />
         </TableCell>
         <TableCell>

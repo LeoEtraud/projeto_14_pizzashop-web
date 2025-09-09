@@ -50,7 +50,7 @@ export function RevenueChart() {
 
   return (
     <Card className="col-span-6">
-      <CardHeader className="flex-row items-center justify-between pb-8">
+      <CardHeader className="flex flex-col gap-4 pb-8 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <CardTitle className="text-base font-medium">
             Receita no período

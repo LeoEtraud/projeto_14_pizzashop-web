@@ -99,7 +99,7 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
       <TableCell className="font-mono text-xs font-medium">
         {order.orderId}
       </TableCell>
-      <TableCell className="text-muted-foreground">
+      <TableCell className="hidden text-muted-foreground sm:table-cell">
         {formatDistanceToNow(order.createdAt, {
           locale: ptBR,
           addSuffix: true,
@@ -108,14 +108,16 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
       <TableCell>
         <OrderStatus status={order.status} />
       </TableCell>
-      <TableCell className="font-medium">{order.customerName}</TableCell>
+      <TableCell className="hidden font-medium md:table-cell">
+        {order.customerName}
+      </TableCell>
       <TableCell className="font-medium">
         {(order.total / 100).toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
         })}
       </TableCell>
-      <TableCell>
+      <TableCell className="hidden lg:table-cell">
         {order.status === "pending" && (
           <Button
             onClick={() => approveOrderFn({ orderId: order.orderId })}
@@ -163,7 +165,7 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
           size="xs"
         >
           <X className="mr-2 h-3 w-3" />
-          Cancelar
+          <span className="hidden sm:inline">Cancelar</span>
         </Button>
       </TableCell>
     </TableRow>

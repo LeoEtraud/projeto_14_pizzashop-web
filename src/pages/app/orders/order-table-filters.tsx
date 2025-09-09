@@ -82,61 +82,73 @@ export function OrderTableFilters() {
   return (
     <form
       onSubmit={handleSubmit(handleFilter)}
-      className="flex items-center gap-2"
+      className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-2"
     >
       <span className="text-sm font-semibold">Filtros:</span>
-      <Input
-        placeholder="ID do pedido"
-        className="h-8 w-[320px]"
-        {...register("orderId")}
-      />
-      <Input
-        placeholder="Nome do cliente"
-        className="h-8 w-[320px]"
-        {...register("customerName")}
-      />
-      <Controller
-        name="status"
-        control={control}
-        render={({ field: { name, onChange, value, disabled } }) => {
-          return (
-            <Select
-              defaultValue="all"
-              name={name}
-              onValueChange={onChange}
-              value={value}
-              disabled={disabled}
-            >
-              <SelectTrigger className="h-8 w-[180px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos status</SelectItem>
-                <SelectItem value="pending">Pendente</SelectItem>
-                <SelectItem value="canceled">Cancelado</SelectItem>
-                <SelectItem value="processing">Em preparo</SelectItem>
-                <SelectItem value="delivering">Em entrega</SelectItem>
-                <SelectItem value="delivered">Entregue</SelectItem>
-              </SelectContent>
-            </Select>
-          );
-        }}
-      />
+      <div className="flex flex-col gap-2 sm:flex-row sm:gap-2">
+        <Input
+          placeholder="ID do pedido"
+          className="h-8 w-full sm:w-[200px] lg:w-[320px]"
+          {...register("orderId")}
+        />
+        <Input
+          placeholder="Nome do cliente"
+          className="h-8 w-full sm:w-[200px] lg:w-[320px]"
+          {...register("customerName")}
+        />
+        <Controller
+          name="status"
+          control={control}
+          render={({ field: { name, onChange, value, disabled } }) => {
+            return (
+              <Select
+                defaultValue="all"
+                name={name}
+                onValueChange={onChange}
+                value={value}
+                disabled={disabled}
+              >
+                <SelectTrigger className="h-8 w-full sm:w-[140px] lg:w-[180px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos status</SelectItem>
+                  <SelectItem value="pending">Pendente</SelectItem>
+                  <SelectItem value="canceled">Cancelado</SelectItem>
+                  <SelectItem value="processing">Em preparo</SelectItem>
+                  <SelectItem value="delivering">Em entrega</SelectItem>
+                  <SelectItem value="delivered">Entregue</SelectItem>
+                </SelectContent>
+              </Select>
+            );
+          }}
+        />
+      </div>
 
-      <Button type="submit" variant="secondary" size="xs">
-        <Search className="mr-2 h-4 w-4" />
-        Filtrar resultados
-      </Button>
+      <div className="flex gap-2">
+        <Button
+          type="submit"
+          variant="secondary"
+          size="xs"
+          className="flex-1 sm:flex-none"
+        >
+          <Search className="mr-2 h-4 w-4" />
+          <span className="hidden sm:inline">Filtrar resultados</span>
+          <span className="sm:hidden">Filtrar</span>
+        </Button>
 
-      <Button
-        type="button"
-        onClick={handleRemoveFilters}
-        variant="outline"
-        size="xs"
-      >
-        <X className="mr-2 h-4 w-4" />
-        Remover resultados
-      </Button>
+        <Button
+          type="button"
+          onClick={handleRemoveFilters}
+          variant="outline"
+          size="xs"
+          className="flex-1 sm:flex-none"
+        >
+          <X className="mr-2 h-4 w-4" />
+          <span className="hidden sm:inline">Remover resultados</span>
+          <span className="sm:hidden">Limpar</span>
+        </Button>
+      </div>
     </form>
   );
 }
