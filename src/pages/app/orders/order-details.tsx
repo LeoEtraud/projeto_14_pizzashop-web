@@ -26,13 +26,15 @@ export interface OrderDetailsProps {
 }
 
 interface OrderItem {
-  product: any;
-  priceInCents: any;
-  unitPriceInCents: any;
   id: string;
   name: string;
   price: number;
   quantity: number;
+  product?: {
+    name: string;
+  };
+  priceInCents?: number;
+  unitPriceInCents?: number;
 }
 
 export function OrderDetails({ orderId, open }: OrderDetailsProps) {
@@ -43,14 +45,14 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
   });
 
   return (
-    <DialogContent className="max-w-4xl">
-      <DialogHeader>
+    <DialogContent className="max-w-4xl p-4">
+      <DialogHeader className="pb-3">
         <DialogTitle>Nº Pedido: {orderId}</DialogTitle>
         <DialogDescription>Detalhes do pedido</DialogDescription>
       </DialogHeader>
 
       {order ? (
-        <div className="space-y-6">
+        <div className="space-y-4">
           <div className="overflow-x-auto">
             <Table>
               <TableBody>
@@ -113,36 +115,37 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
               </TableHeader>
               <TableBody>
                 {order.orderItems.map((item: OrderItem) => {
-                  const unitPriceInCents = Number(
-                    item.priceInCents ??
-                      item.unitPriceInCents ??
-                      item.price ??
-                      0,
-                  );
-                  const qty = Number(item.quantity ?? 0);
-                  const subtotalInCents = unitPriceInCents * qty;
-
                   return (
                     <TableRow key={item.id}>
-                      {/* Produto */}
-                      <TableCell>
-                        {item.product?.name ?? item.name ?? "—"}
-                      </TableCell>
-
-                      {/* Qtd. */}
-                      <TableCell className="text-right">{qty}</TableCell>
-
-                      {/* Preço (unitário) */}
+                      <TableCell>{item.product?.name ?? item.name}</TableCell>
                       <TableCell className="text-right">
-                        {(unitPriceInCents / 100).toLocaleString("pt-BR", {
+                        {item.quantity}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {(
+                          Number(
+                            item.priceInCents ??
+                              item.unitPriceInCents ??
+                              item.price ??
+                              0,
+                          ) / 100
+                        ).toLocaleString("pt-BR", {
                           style: "currency",
                           currency: "BRL",
                         })}
                       </TableCell>
 
-                      {/* Subtotal */}
                       <TableCell className="text-right">
-                        {(subtotalInCents / 100).toLocaleString("pt-BR", {
+                        {(
+                          (Number(
+                            item.priceInCents ??
+                              item.unitPriceInCents ??
+                              item.price ??
+                              0,
+                          ) *
+                            item.quantity) /
+                          100
+                        ).toLocaleString("pt-BR", {
                           style: "currency",
                           currency: "BRL",
                         })}
@@ -151,7 +154,6 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
                   );
                 })}
               </TableBody>
-
               <TableFooter>
                 <TableRow>
                   <TableCell colSpan={3}>Total do pedido</TableCell>
