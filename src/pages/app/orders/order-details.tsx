@@ -113,53 +113,45 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
               </TableHeader>
               <TableBody>
                 {order.orderItems.map((item: OrderItem) => {
+                  const unitPriceInCents = Number(
+                    item.priceInCents ??
+                      item.unitPriceInCents ??
+                      item.price ??
+                      0,
+                  );
+                  const qty = Number(item.quantity ?? 0);
+                  const subtotalInCents = unitPriceInCents * qty;
+
                   return (
                     <TableRow key={item.id}>
-                      <TableCell>{item.product?.name ?? item.name}</TableCell>
+                      {/* Produto */}
+                      <TableCell>
+                        {item.product?.name ?? item.name ?? "—"}
+                      </TableCell>
 
+                      {/* Qtd. */}
+                      <TableCell className="text-right">{qty}</TableCell>
+
+                      {/* Preço (unitário) */}
                       <TableCell className="text-right">
-                        {(
-                          Number(
-                            item.priceInCents ??
-                              item.unitPriceInCents ??
-                              item.price ??
-                              0,
-                          ) / 100
-                        ).toLocaleString("pt-BR", {
+                        {(unitPriceInCents / 100).toLocaleString("pt-BR", {
                           style: "currency",
                           currency: "BRL",
                         })}
                       </TableCell>
 
+                      {/* Subtotal */}
                       <TableCell className="text-right">
-                        {(
-                          (Number(
-                            item.priceInCents ??
-                              item.unitPriceInCents ??
-                              item.price ??
-                              0,
-                          ) *
-                            item.quantity) /
-                          100
-                        ).toLocaleString("pt-BR", {
+                        {(subtotalInCents / 100).toLocaleString("pt-BR", {
                           style: "currency",
                           currency: "BRL",
                         })}
-                      </TableCell>
-
-                      <TableCell className="text-right">
-                        {((item.price * item.quantity) / 100).toLocaleString(
-                          "pt-BR",
-                          {
-                            style: "currency",
-                            currency: "BRL",
-                          },
-                        )}
                       </TableCell>
                     </TableRow>
                   );
                 })}
               </TableBody>
+
               <TableFooter>
                 <TableRow>
                   <TableCell colSpan={3}>Total do pedido</TableCell>
