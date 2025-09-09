@@ -17,14 +17,13 @@ import AuthCallback from "./pages/AuthCallback";
 export const router = createBrowserRouter([
   // callback do magic-link (pública)
   { path: "/auth/callback", element: <AuthCallback /> },
-  { path: "/home/auth/callback", element: <AuthCallback /> }, // opcional, paliativo
+  { path: "/dashboard/auth/callback", element: <AuthCallback /> }, // opcional, paliativo
 
   // --- Público (auth) na raiz ---
   {
     path: "/",
     element: <AuthLayout />,
     children: [
-      { index: true, element: <SignIn /> }, // "/" abre SignIn
       { path: "sign-in", element: <SignIn /> }, // "/sign-in"
       { path: "sign-up", element: <SignUp /> }, // "/sign-up"
     ],
@@ -32,18 +31,18 @@ export const router = createBrowserRouter([
 
   // --- App autenticado em /home ---
   {
-    path: "/home",
+    path: "/",
     element: <AppLayout />,
     errorElement: <Error />,
     children: [
-      { index: true, element: <Dashboard /> }, // "/home"
+      { path: "dashboard", element: <Dashboard /> }, // "/home"
       { path: "orders", element: <Orders /> }, // "/home/orders"
       { path: "collaborators", element: <Collaborators /> }, // "/home/collaborators"
     ],
   },
 
   // (Opcional) redireciona bookmarks antigos
-  { path: "/dashboard", element: <Navigate to="/home" replace /> },
+  { path: "/dashboard", element: <Navigate to="/" replace /> },
 
   // 404
   { path: "*", element: <NotFound /> },
