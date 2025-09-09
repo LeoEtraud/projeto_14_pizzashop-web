@@ -49,7 +49,7 @@ export function RevenueChart() {
   }, [dailyRevenueInPeriod]);
 
   return (
-    <Card className="col-span-6">
+    <Card className="col-span-1 lg:col-span-6">
       <CardHeader className="flex flex-col gap-4 pb-8 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <CardTitle className="text-base font-medium">
