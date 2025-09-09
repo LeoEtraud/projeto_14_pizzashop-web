@@ -88,7 +88,7 @@ export function RevenueChart() {
                 type="linear"
                 strokeWidth={2}
                 dataKey="receipt"
-                stroke={colors.violet["500"]}
+                stroke={colors.green["500"]}
               />
             </LineChart>
           </ResponsiveContainer>
