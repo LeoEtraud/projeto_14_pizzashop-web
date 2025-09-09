@@ -26,7 +26,14 @@ export function SignUp() {
     handleSubmit,
     formState: { isSubmitting },
     reset,
-  } = useForm<SignUpForm>();
+  } = useForm<SignUpForm>({
+    defaultValues: {
+      restaurantName: "",
+      managerName: "",
+      email: "",
+      phone: "",
+    },
+  });
 
   const { mutateAsync: registerRestaurantFn } = useMutation({
     mutationFn: registerRestaurant,
@@ -48,7 +55,12 @@ export function SignUp() {
             navigate(`/sign-in?email=${encodeURIComponent(data.email)}`),
         },
       });
-      reset();
+      reset({
+        restaurantName: "",
+        managerName: "",
+        email: "",
+        phone: "",
+      });
     } catch {
       toast.error("Erro ao cadastrar restaurante.");
     }
