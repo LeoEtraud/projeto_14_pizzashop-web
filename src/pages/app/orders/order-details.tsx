@@ -26,6 +26,9 @@ export interface OrderDetailsProps {
 }
 
 interface OrderItem {
+  product: any;
+  priceInCents: any;
+  unitPriceInCents: any;
   id: string;
   name: string;
   price: number;
@@ -112,16 +115,38 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
                 {order.orderItems.map((item: OrderItem) => {
                   return (
                     <TableRow key={item.id}>
-                      <TableCell>{item.name}</TableCell>
+                      <TableCell>{item.product?.name ?? item.name}</TableCell>
+
                       <TableCell className="text-right">
-                        {item.quantity}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {(item.price / 100).toLocaleString("pt-BR", {
+                        {(
+                          Number(
+                            item.priceInCents ??
+                              item.unitPriceInCents ??
+                              item.price ??
+                              0,
+                          ) / 100
+                        ).toLocaleString("pt-BR", {
                           style: "currency",
                           currency: "BRL",
                         })}
                       </TableCell>
+
+                      <TableCell className="text-right">
+                        {(
+                          (Number(
+                            item.priceInCents ??
+                              item.unitPriceInCents ??
+                              item.price ??
+                              0,
+                          ) *
+                            item.quantity) /
+                          100
+                        ).toLocaleString("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                      </TableCell>
+
                       <TableCell className="text-right">
                         {((item.price * item.quantity) / 100).toLocaleString(
                           "pt-BR",
