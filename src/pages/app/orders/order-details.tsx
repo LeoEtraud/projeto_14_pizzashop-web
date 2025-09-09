@@ -27,8 +27,10 @@ export interface OrderDetailsProps {
 
 interface OrderItem {
   id: string;
-  name: string;
-  price: number;
+  product: {
+    name: string;
+  };
+  priceInCents: number;
   quantity: number;
 }
 
@@ -112,24 +114,24 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
                 {order.orderItems.map((item: OrderItem) => {
                   return (
                     <TableRow key={item.id}>
-                      <TableCell>{item.name}</TableCell>
+                      <TableCell>{item.product.name}</TableCell>
                       <TableCell className="text-right">
                         {item.quantity}
                       </TableCell>
                       <TableCell className="text-right">
-                        {(item.price / 100).toLocaleString("pt-BR", {
+                        {(item.priceInCents / 100).toLocaleString("pt-BR", {
                           style: "currency",
                           currency: "BRL",
                         })}
                       </TableCell>
                       <TableCell className="text-right">
-                        {((item.price * item.quantity) / 100).toLocaleString(
-                          "pt-BR",
-                          {
-                            style: "currency",
-                            currency: "BRL",
-                          },
-                        )}
+                        {(
+                          (item.priceInCents * item.quantity) /
+                          100
+                        ).toLocaleString("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
                       </TableCell>
                     </TableRow>
                   );
