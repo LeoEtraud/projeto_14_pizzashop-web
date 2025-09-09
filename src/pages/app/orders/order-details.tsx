@@ -25,16 +25,23 @@ export interface OrderDetailsProps {
   open: boolean;
 }
 
-interface OrderItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  product?: {
-    name: string;
-  };
-  priceInCents?: number;
-  unitPriceInCents?: number;
+// helper: converte qualquer forma comum de “preço” para centavos
+function toCents(raw: unknown): number {
+  if (raw == null) return 0;
+  // já é número?
+  if (typeof raw === "number" && Number.isFinite(raw)) return Math.round(raw);
+  // string tipo "5000" (centavos) ou "50.00"/"50,00" (reais)
+  const s = String(raw).trim();
+  if (!s) return 0;
+  // se tiver vírgula/ponto, tratamos como valor em reais
+  if (/[.,]/.test(s)) {
+    const reais = parseFloat(s.replace(/\./g, "").replace(",", "."));
+    if (!Number.isFinite(reais)) return 0;
+    return Math.round(reais * 100);
+  }
+  // caso contrário é inteiro em centavos
+  const n = Number(s);
+  return Number.isFinite(n) ? Math.round(n) : 0;
 }
 
 export function OrderDetails({ orderId, open }: OrderDetailsProps) {
@@ -42,6 +49,28 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
     queryKey: ["order", orderId],
     queryFn: () => getOrderDetails({ orderId }),
     enabled: open,
+    // Normaliza para a UI
+    select: (o: any) => {
+      const items = (o?.orderItems ?? []).map((it: any) => {
+        const unitPriceInCents = toCents(
+          it.priceInCents ?? it.unitPriceInCents ?? it.price,
+        );
+        const quantity = Number(it.quantity ?? 0);
+        return {
+          id: String(it.id),
+          name: it.product?.name ?? it.name ?? "—",
+          quantity,
+          unitPriceInCents,
+          subtotalInCents: unitPriceInCents * quantity,
+        };
+      });
+
+      return {
+        ...o,
+        totalInCents: toCents(o?.totalInCents ?? o?.total ?? 0),
+        orderItems: items,
+      };
+    },
   });
 
   return (
@@ -93,7 +122,7 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
                     Realizado há
                   </TableCell>
                   <TableCell className="flex justify-end">
-                    {formatDistanceToNow(order.createdAt, {
+                    {formatDistanceToNow(new Date(order.createdAt), {
                       locale: ptBR,
                       addSuffix: true,
                     })}
@@ -113,47 +142,45 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
                   <TableHead className="text-right">Subtotal</TableHead>
                 </TableRow>
               </TableHeader>
+
               <TableBody>
-                {order.orderItems.map((item: OrderItem) => {
-                  return (
+                {order.orderItems.map(
+                  (item: {
+                    id: string;
+                    name: string;
+                    quantity: number;
+                    unitPriceInCents: number;
+                    subtotalInCents: number;
+                  }) => (
                     <TableRow key={item.id}>
-                      <TableCell>{item.product?.name ?? item.name}</TableCell>
+                      {/* Produto */}
+                      <TableCell>{item.name}</TableCell>
+
+                      {/* Qtd. */}
                       <TableCell className="text-right">
                         {item.quantity}
                       </TableCell>
+
+                      {/* Preço unitário */}
                       <TableCell className="text-right">
-                        {(
-                          Number(
-                            item.priceInCents ??
-                              item.unitPriceInCents ??
-                              item.price ??
-                              0,
-                          ) / 100
-                        ).toLocaleString("pt-BR", {
+                        {(item.unitPriceInCents / 100).toLocaleString("pt-BR", {
                           style: "currency",
                           currency: "BRL",
                         })}
                       </TableCell>
 
+                      {/* Subtotal */}
                       <TableCell className="text-right">
-                        {(
-                          (Number(
-                            item.priceInCents ??
-                              item.unitPriceInCents ??
-                              item.price ??
-                              0,
-                          ) *
-                            item.quantity) /
-                          100
-                        ).toLocaleString("pt-BR", {
+                        {(item.subtotalInCents / 100).toLocaleString("pt-BR", {
                           style: "currency",
                           currency: "BRL",
                         })}
                       </TableCell>
                     </TableRow>
-                  );
-                })}
+                  ),
+                )}
               </TableBody>
+
               <TableFooter>
                 <TableRow>
                   <TableCell colSpan={3}>Total do pedido</TableCell>
