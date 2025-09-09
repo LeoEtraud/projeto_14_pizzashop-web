@@ -62,8 +62,8 @@ export function Orders() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[64px]"></TableHead>
-                    <TableHead className="w-[140px]">Identificador</TableHead>
+                    <TableHead className="w-[64px]">Ver</TableHead>
+                    <TableHead className="w-[140px]">Nº Pedido</TableHead>
                     <TableHead className="hidden w-[180px] sm:table-cell">
                       Realizado há
                     </TableHead>
@@ -73,7 +73,7 @@ export function Orders() {
                     </TableHead>
                     <TableHead className="w-[140px]">Total do pedido</TableHead>
                     <TableHead className="hidden w-[164px] lg:table-cell"></TableHead>
-                    <TableHead className="w-[132px]"></TableHead>
+                    <TableHead className="w-[132px]">Alterar</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
