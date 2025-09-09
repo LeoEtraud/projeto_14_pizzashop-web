@@ -29,15 +29,14 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // --- App autenticado em /home ---
   {
     path: "/",
     element: <AppLayout />,
     errorElement: <Error />,
     children: [
-      { path: "dashboard", element: <Dashboard /> }, // "/home"
-      { path: "orders", element: <Orders /> }, // "/home/orders"
-      { path: "collaborators", element: <Collaborators /> }, // "/home/collaborators"
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "orders", element: <Orders /> },
+      { path: "collaborators", element: <Collaborators /> },
     ],
   },
 
