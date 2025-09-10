@@ -19,29 +19,43 @@ export const router = createBrowserRouter([
   { path: "/auth/callback", element: <AuthCallback /> },
   { path: "/dashboard/auth/callback", element: <AuthCallback /> }, // opcional, paliativo
 
-  // --- Público (auth) na raiz ---
+  // --- Público (auth) ---
   {
-    path: "/",
+    path: "/sign-in",
     element: <AuthLayout />,
-    children: [
-      { path: "sign-in", element: <SignIn /> }, // "/sign-in"
-      { path: "sign-up", element: <SignUp /> }, // "/sign-up"
-    ],
+    children: [{ index: true, element: <SignIn /> }],
   },
 
   {
-    path: "/",
+    path: "/sign-up",
+    element: <AuthLayout />,
+    children: [{ index: true, element: <SignUp /> }],
+  },
+
+  // --- App (dashboard) ---
+  {
+    path: "/dashboard",
     element: <AppLayout />,
     errorElement: <Error />,
-    children: [
-      { path: "dashboard", element: <Dashboard /> },
-      { path: "orders", element: <Orders /> },
-      { path: "collaborators", element: <Collaborators /> },
-    ],
+    children: [{ index: true, element: <Dashboard /> }],
   },
 
-  // (Opcional) redireciona bookmarks antigos
-  { path: "/dashboard", element: <Navigate to="/" replace /> },
+  {
+    path: "/orders",
+    element: <AppLayout />,
+    errorElement: <Error />,
+    children: [{ index: true, element: <Orders /> }],
+  },
+
+  {
+    path: "/collaborators",
+    element: <AppLayout />,
+    errorElement: <Error />,
+    children: [{ index: true, element: <Collaborators /> }],
+  },
+
+  // Redireciona raiz para dashboard
+  { path: "/", element: <Navigate to="/dashboard" replace /> },
 
   // 404
   { path: "*", element: <NotFound /> },
