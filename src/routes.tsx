@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 
 import { AuthLayout } from "./pages/_layouts/auth";
 import { AppLayout } from "./pages/_layouts/app";
@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
 
   // --- Público (auth) ---
   {
-    path: "/sign-in",
+    path: "/",
     element: <AuthLayout />,
     children: [{ index: true, element: <SignIn /> }],
   },
@@ -53,9 +53,6 @@ export const router = createBrowserRouter([
     errorElement: <Error />,
     children: [{ index: true, element: <Collaborators /> }],
   },
-
-  // Redireciona raiz para dashboard
-  { path: "/", element: <Navigate to="/dashboard" replace /> },
 
   // 404
   { path: "*", element: <NotFound /> },

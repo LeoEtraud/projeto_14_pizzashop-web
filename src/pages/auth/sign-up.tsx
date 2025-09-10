@@ -51,8 +51,7 @@ export function SignUp() {
       toast.success("Restaurante cadastrado com sucesso!", {
         action: {
           label: "Login",
-          onClick: () =>
-            navigate(`/sign-in?email=${encodeURIComponent(data.email)}`),
+          onClick: () => navigate(`/?email=${encodeURIComponent(data.email)}`),
         },
       });
       reset({
