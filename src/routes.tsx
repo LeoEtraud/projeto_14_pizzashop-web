@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
 
   // --- Público (auth) ---
   {
-    path: "/sign-in",
+    path: "/",
     element: <AuthLayout />,
     children: [{ index: true, element: <SignIn /> }],
   },

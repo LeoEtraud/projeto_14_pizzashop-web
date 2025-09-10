@@ -75,7 +75,7 @@ export function SignUp() {
         asChild
         className="absolute right-6 top-6 hidden md:right-8 md:top-8 md:inline-flex"
       >
-        <Link to="/sign-in">Fazer login</Link>
+        <Link to="/">Fazer login</Link>
       </Button>
 
       <div className="w-full max-w-sm sm:max-w-md">
@@ -89,10 +89,7 @@ export function SignUp() {
 
           {/* Link alternativo visível apenas no mobile */}
           <div className="md:hidden">
-            <Link
-              to="/sign-in"
-              className="text-sm underline underline-offset-4"
-            >
+            <Link to="/" className="text-sm underline underline-offset-4">
               Já tenho conta
             </Link>
           </div>
