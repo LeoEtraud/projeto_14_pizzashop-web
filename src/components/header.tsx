@@ -19,10 +19,10 @@ export function Header() {
             <UtensilsCrossed className="h-4 w-4" />
             <span className="hidden sm:inline">Pedidos</span>
           </NavLink>
-          <NavLink to="/collaborators">
+          {/* <NavLink to="/collaborators">
             <UsersRound className="h-4 w-4" />
             <span className="hidden sm:inline">Colaboradores</span>
-          </NavLink>
+          </NavLink> */}
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
