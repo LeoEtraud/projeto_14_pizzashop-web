@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Helmet } from "react-helmet-async";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,6 +23,7 @@ export function SignUp() {
   const navigate = useNavigate();
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { isSubmitting },
@@ -131,18 +132,31 @@ export function SignUp() {
 
           <div className="space-y-2">
             <Label htmlFor="phone">Seu celular</Label>
-            <InputMask
-              id="phone"
-              mask="(99) 99999-9999"
-              placeholder="(98) 98888-8888"
-              autoComplete="tel"
-              inputMode="tel"
-              {...register("phone")}
-            >
-              {(inputProps: any) => (
-                <Input {...inputProps} type="tel" className="w-full" />
+
+            <Controller
+              name="phone"
+              control={control}
+              render={({ field }) => (
+                <InputMask
+                  mask="(99) 99999-9999" // aceita fixo e celular
+                  maskChar={null} // não mostra '_' na máscara
+                  value={field.value || ""} // garante string
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                >
+                  {(inputProps: any) => (
+                    <Input
+                      {...inputProps}
+                      id="phone"
+                      type="tel"
+                      autoComplete="tel"
+                      inputMode="tel"
+                      placeholder="(99) 91234-5678"
+                    />
+                  )}
+                </InputMask>
               )}
-            </InputMask>
+            />
           </div>
 
           <Button
