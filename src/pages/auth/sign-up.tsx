@@ -106,7 +106,7 @@ export function SignUp() {
               autoComplete="organization"
               placeholder="Pizzaria da Esquina"
               {...register("restaurantName")}
-              maxLength={30}
+              maxLength={50}
             />
           </div>
           <div className="space-y-2">
@@ -117,7 +117,7 @@ export function SignUp() {
               autoComplete="name"
               placeholder="João Silva"
               {...register("managerName")}
-              maxLength={30}
+              maxLength={50}
             />
           </div>
           <div className="space-y-2">
@@ -129,7 +129,7 @@ export function SignUp() {
               inputMode="email"
               placeholder="voce@exemplo.com"
               {...register("email")}
-              maxLength={30}
+              maxLength={50}
             />
           </div>
 
