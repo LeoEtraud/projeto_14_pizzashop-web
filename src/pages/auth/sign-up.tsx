@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { registerRestaurant } from "@/api/register-restaurant";
+import InputMask from "react-input-mask";
 
 const signUpForm = z.object({
   restaurantName: z.string(),
@@ -106,7 +107,6 @@ export function SignUp() {
               {...register("restaurantName")}
             />
           </div>
-
           <div className="space-y-2">
             <Label htmlFor="managerName">Seu nome</Label>
             <Input
@@ -117,7 +117,6 @@ export function SignUp() {
               {...register("managerName")}
             />
           </div>
-
           <div className="space-y-2">
             <Label htmlFor="email">Seu e-mail</Label>
             <Input
@@ -132,14 +131,18 @@ export function SignUp() {
 
           <div className="space-y-2">
             <Label htmlFor="phone">Seu celular</Label>
-            <Input
+            <InputMask
               id="phone"
-              type="tel"
+              mask="(99) 99999-9999"
+              placeholder="(98) 98888-8888"
               autoComplete="tel"
               inputMode="tel"
-              placeholder="(99) 91234-5678"
               {...register("phone")}
-            />
+            >
+              {(inputProps: any) => (
+                <Input {...inputProps} type="tel" className="w-full" />
+              )}
+            </InputMask>
           </div>
 
           <Button
